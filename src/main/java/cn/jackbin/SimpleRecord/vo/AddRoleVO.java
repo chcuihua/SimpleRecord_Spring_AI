@@ -3,7 +3,7 @@ package cn.jackbin.SimpleRecord.vo;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * @author: create by bin

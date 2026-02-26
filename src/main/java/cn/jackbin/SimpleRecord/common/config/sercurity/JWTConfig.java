@@ -3,7 +3,6 @@ package cn.jackbin.SimpleRecord.common.config.sercurity;
 import cn.jackbin.SimpleRecord.constant.PermissionConstant;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -31,12 +30,11 @@ public class JWTConfig {
     private String header;
 
     private SecretKey getSigningKey() {
+        // 确保密钥足够长，jjwt 0.12+ 要求至少 256 bits
         byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
-        // 确保密钥长度符合 HS512 要求（至少 64 字节）
-        if (keyBytes.length < 64) {
-            byte[] paddedKey = new byte[64];
-            System.arraycopy(keyBytes, 0, paddedKey, 0, keyBytes.length);
-            return Keys.hmacShaKeyFor(paddedKey);
+        if (keyBytes.length < 32) {
+            // 如果密钥太短，用它来生成一个符合要求的密钥
+            return Keys.hmacShaKeyFor(Arrays.copyOf(keyBytes, 32));
         }
         return Keys.hmacShaKeyFor(keyBytes);
     }
@@ -53,12 +51,14 @@ public class JWTConfig {
         Map<String,Object> map = new HashMap<>();
         map.put(PermissionConstant.PermissionSign,permissionList);
         return Jwts.builder()
-                .setHeaderParam("typ", "JWT")
-                .setClaims(map)
-                .setSubject(userName)
-                .setIssuedAt(nowDate)
-                .setExpiration(expireDate)
-                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
+                .header()
+                    .add("typ", "JWT")
+                    .and()
+                .claims(map)
+                .subject(userName)
+                .issuedAt(nowDate)
+                .expiration(expireDate)
+                .signWith(getSigningKey())
                 .compact();
     }
 
@@ -69,11 +69,11 @@ public class JWTConfig {
      */
     public Claims getTokenClaim (String token) {
         try {
-            return Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey())
+            return Jwts.parser()
+                    .verifyWith(getSigningKey())
                     .build()
-                    .parseClaimsJws(token)
-                    .getBody();
+                    .parseSignedClaims(token)
+                    .getPayload();
         } catch (Exception e) {
             return null;
         }

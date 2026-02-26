@@ -5,8 +5,8 @@ import cn.jackbin.SimpleRecord.common.LocalUserId;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 拦截器：用于异步移除存储在ThreadLocal中的值

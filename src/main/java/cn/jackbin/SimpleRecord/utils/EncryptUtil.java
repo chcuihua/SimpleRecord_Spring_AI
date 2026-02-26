@@ -10,11 +10,11 @@ package cn.jackbin.SimpleRecord.utils;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.Mac;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
+import jakarta.crypto.Cipher;
+import jakarta.crypto.KeyGenerator;
+import jakarta.crypto.Mac;
+import jakarta.crypto.SecretKey;
+import jakarta.crypto.spec.SecretKeySpec;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Base64;
