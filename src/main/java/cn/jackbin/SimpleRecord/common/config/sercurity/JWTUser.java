@@ -2,7 +2,7 @@ package cn.jackbin.SimpleRecord.common.config.sercurity;
 
 import cn.jackbin.SimpleRecord.bo.UserMenuBO;
 import cn.jackbin.SimpleRecord.constant.MenuConstants;
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2..JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

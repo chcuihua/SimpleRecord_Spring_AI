@@ -8,7 +8,7 @@ import cn.jackbin.SimpleRecord.utils.HttpUtil;
 import cn.jackbin.SimpleRecord.vo.LoginSuccessVO;
 import cn.jackbin.SimpleRecord.vo.Result;
 import cn.jackbin.SimpleRecord.vo.WechatUserVO;
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2..JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

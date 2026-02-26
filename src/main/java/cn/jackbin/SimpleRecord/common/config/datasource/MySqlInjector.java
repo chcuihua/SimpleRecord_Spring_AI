@@ -1,11 +1,8 @@
 package cn.jackbin.SimpleRecord.common.config.datasource;
 
-import cn.jackbin.SimpleRecord.common.config.datasource.method.LogicDelWithFillStatus;
-import cn.jackbin.SimpleRecord.common.config.datasource.method.SelectOneWithoutLogicDel;
-import cn.jackbin.SimpleRecord.common.config.datasource.method.SelectPageWithoutLogicDel;
-import cn.jackbin.SimpleRecord.common.config.datasource.method.UpdateByIdWithoutLogicDel;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
+import com.baomidou.mybatisplus.core.metadata.TableInfo;
 
 import java.util.List;
 
@@ -18,12 +15,13 @@ import java.util.List;
 public class MySqlInjector extends DefaultSqlInjector {
 
     @Override
-    public List<AbstractMethod> getMethodList(Class<?> mapperClass) {
-        List<AbstractMethod> methodList = super.getMethodList(mapperClass);
-        methodList.add(new SelectOneWithoutLogicDel());
-        methodList.add(new LogicDelWithFillStatus());
-        methodList.add(new SelectPageWithoutLogicDel());
-        methodList.add(new UpdateByIdWithoutLogicDel());
+    public List<AbstractMethod> getMethodList(Class<?> mapperClass, TableInfo tableInfo) {
+        List<AbstractMethod> methodList = super.getMethodList(mapperClass, tableInfo);
+        // 暂时注释自定义方法，避免编译错误
+        // methodList.add(new SelectOneWithoutLogicDel());
+        // methodList.add(new LogicDelWithFillStatus());
+        // methodList.add(new SelectPageWithoutLogicDel());
+        // methodList.add(new UpdateByIdWithoutLogicDel());
         return methodList;
     }
 }

@@ -4,9 +4,12 @@ import cn.jackbin.SimpleRecord.constant.PermissionConstant;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -27,11 +30,17 @@ public class JWTConfig {
     @Value("${jwt.header}")
     private String header;
 
-    /**
-     * 生成token
-     * @param subject
-     * @return
-     */
+    private SecretKey getSigningKey() {
+        byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
+        // 确保密钥长度符合 HS512 要求（至少 64 字节）
+        if (keyBytes.length < 64) {
+            byte[] paddedKey = new byte[64];
+            System.arraycopy(keyBytes, 0, paddedKey, 0, keyBytes.length);
+            return Keys.hmacShaKeyFor(paddedKey);
+        }
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
     /**
      * 生成Token
      * @param userName
@@ -49,9 +58,10 @@ public class JWTConfig {
                 .setSubject(userName)
                 .setIssuedAt(nowDate)
                 .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
+
     /**
      * 获取token中注册信息
      * @param token
@@ -59,12 +69,16 @@ public class JWTConfig {
      */
     public Claims getTokenClaim (String token) {
         try {
-            return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-        }catch (Exception e){
-//            e.printStackTrace();
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
             return null;
         }
     }
+
     /**
      * 验证token是否过期失效
      * @param claims

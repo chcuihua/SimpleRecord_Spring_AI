@@ -1,7 +1,7 @@
 package cn.jackbin.SimpleRecord.utils;
 
 import cn.jackbin.SimpleRecord.constant.Constants;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2..JSONObject;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;

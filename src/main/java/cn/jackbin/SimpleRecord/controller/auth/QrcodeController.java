@@ -8,7 +8,7 @@ import cn.jackbin.SimpleRecord.service.WechatAuthService;
 import cn.jackbin.SimpleRecord.utils.*;
 import cn.jackbin.SimpleRecord.vo.QrcodeAuthorizationVO;
 import cn.jackbin.SimpleRecord.vo.Result;
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2..JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
